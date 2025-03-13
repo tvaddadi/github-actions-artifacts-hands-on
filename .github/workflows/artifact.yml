@@ -1,6 +1,6 @@
 name: Workflow Demo
 
-on: [push]
+on: push
 
 jobs:
   build:
@@ -18,3 +18,18 @@ jobs:
       with:
         name: hello-artifact
         path: hello.txt
+  
+  download:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download file
+      uses: actions/download-artifact@v4
+      with:
+        name: hello-artifact
+        path: ./artifacts
+
+    - name: Read file content
+      run: cat ./artifacts/hello.txt
+
